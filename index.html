@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f4">
+  <title>Crumb — Donut Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <a class="brand login-brand" href="#login" aria-label="Crumb login"><span class="brand-mark">c.</span><span><strong>crumb</strong><small>DONUT MANAGER</small></span></a>
+      <p class="eyebrow">WELCOME BACK</p>
+      <h1>Sign in<span class="heading-period">.</span></h1>
+      <p class="login-subtitle">Sign in to continue to the Crumb prototype.</p>
+      <form id="loginForm">
+        <label for="loginUsername">Username</label><input id="loginUsername" name="username" autocomplete="username" required placeholder="Enter username">
+        <label for="loginPassword">Password</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder="Enter password">
+        <p class="login-error" id="loginError" role="alert" hidden>Username or password is incorrect.</p>
+        <button class="button button-primary login-submit" type="submit">Sign in →</button>
+      </form>
+      <div class="test-accounts"><strong>Prototype test accounts</strong><span>Admin: <code>admin</code> / <code>boss</code></span><span>Customer: <code>user</code> / <code>123</code></span></div>
+      <p class="login-note">Demo credentials only. This is not secure authentication.</p>
+    </div>
+  </section>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#sales" aria-label="Crumb home">
+        <span class="brand-mark">c.</span>
+        <span><strong>crumb</strong><small>DONUT MANAGER</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="sales"><span class="nav-icon">▦</span> Sales <span class="nav-arrow">↗</span></button>
+        <button class="nav-item" data-view="inventory"><span class="nav-icon">▤</span> Inventory</button>
+        <button class="nav-item" data-view="reservations"><span class="nav-icon">▣</span> Reservations</button>
+        <button class="nav-item" data-view="overview"><span class="nav-icon">◫</span> Overview</button>
+        <button class="nav-item" data-view="reports"><span class="nav-icon">⌁</span> Reports</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mascot-card">
+          <div class="mascot" aria-hidden="true"><span></span></div>
+          <div><strong>Take it one sale at a time.</strong><small>Your little shop companion.</small></div>
+        </div>
+        <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span> Settings</button>
+        <div class="profile"><div class="avatar">S</div><div><strong>Seller workspace</strong><small>Prototype mode</small></div><span class="more">···</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong id="breadcrumbTitle">Sales</strong></div>
+        <div class="topbar-right"><span class="prototype-pill"><i></i> FRONTEND PROTOTYPE</span><select id="sessionPicker" class="session-picker" aria-label="Choose selling session"><option value="">No session selected</option></select><button class="button button-secondary session-new-button" id="newSessionButton">＋ New session</button><button class="icon-button" id="helpButton" aria-label="About this prototype">?</button><button class="button button-secondary" id="logoutButton">Sign out</button></div>
+      </header>
+
+      <section class="view" id="view-storefront">
+        <div class="page-heading storefront-heading"><div><p class="eyebrow">TODAY'S MENU <span class="live-dot"></span></p><h1>Fresh donuts, <span class="heading-period">reserved.</span></h1><p class="subheading" id="storefrontSubtitle">Browse today's available products and reserve your favorites.</p></div><div class="storefront-account"><span id="customerStatus">Signed in</span></div></div>
+        <div class="storefront-banner"><div><span class="banner-kicker">BAKED FOR TODAY</span><h2>A little treat, set aside for you.</h2><p>Availability updates as reservations are placed. Your selected stock is held temporarily after you submit a reservation.</p></div><div class="storefront-mascot" aria-hidden="true">🍩</div></div>
+        <div class="section-toolbar"><div><h2>Available today</h2><p>Prices and stock reflect the selected selling session.</p></div><div class="search-wrap"><span>⌕</span><input id="storeSearch" type="search" placeholder="Find a donut…" aria-label="Search public products"></div></div>
+        <div class="storefront-grid" id="storefrontGrid"></div>
+        <div class="storefront-empty" id="storefrontEmpty">There is no active menu right now. Please check again later.</div>
+        <div class="storefront-bottom"><div><strong>Want to reserve?</strong><span>Choose quantities above, then continue to reservation.</span></div><div class="storefront-checkout"><strong id="publicCartSummary">0 items · ₱0.00</strong><button class="button button-primary" id="reservePublicButton" disabled>Reserve selected items →</button></div></div>
+        <p class="prototype-disclaimer">Prototype demonstration only. Reservations are simulated in this browser; GCash checkout is not connected and no payment will be taken.</p>
+      </section>
+
+      <section class="view active" id="view-sales">
+        <div class="page-heading sales-heading">
+          <div><p class="eyebrow">CURRENT SELLING SESSION <span class="live-dot"></span></p><h1>Make a sale<span class="heading-period">.</span></h1><p class="subheading" id="salesSessionSubtitle">Start or select a session to load its products and stock.</p></div>
+          <div class="heading-actions"><button class="button button-secondary" id="manageTypesTop">Manage catalog</button><button class="button button-secondary" id="closeSessionButton" hidden>Close session</button><button class="button button-primary" id="newSessionHeading">＋ New session</button></div>
+        </div>
+        <div class="sales-layout">
+          <div class="catalog-column">
+            <div class="section-toolbar"><div><h2>Your donut types</h2><p>Choose items to add them to this order.</p></div><div class="search-wrap"><span>⌕</span><input id="typeSearch" type="search" placeholder="Search types…" aria-label="Search donut types"></div></div>
+            <div class="type-grid" id="salesTypeGrid"></div>
+            <div class="empty-state" id="salesEmpty"><div class="empty-icon">＋</div><h3>Your menu starts here</h3><p>Add the donut types you sell. You choose their names, prices, and stock quantities.</p><button class="button button-primary" id="addFirstType">＋ Add your first type</button></div>
+            <div class="catalog-footnote"><span class="status-dot"></span> Stock availability updates after each confirmed sale.</div>
+          </div>
+          <aside class="order-panel">
+            <div class="order-header"><div><p class="eyebrow">CURRENT ORDER</p><h2>Checkout <span class="order-count" id="cartCount">0</span></h2></div><button class="text-button" id="clearCart">Clear</button></div>
+            <div class="cart-items" id="cartItems"><div class="cart-empty"><div class="cart-empty-icon">▤</div><strong>No items yet</strong><span>Choose a donut type to start an order.</span></div></div>
+            <div class="order-summary">
+              <div class="summary-line"><span>Items</span><strong id="summaryUnits">0</strong></div>
+              <div class="summary-line"><span>Subtotal</span><strong id="summarySubtotal">₱0.00</strong></div>
+              <div class="summary-line total-line"><span>Total</span><strong id="summaryTotal">₱0.00</strong></div>
+              <button class="button button-primary checkout-button" id="checkoutButton" disabled>Review checkout <span>→</span></button>
+              <p class="secure-note">Demo only · No real payment is processed</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-inventory">
+        <div class="page-heading"><div><p class="eyebrow">STOCK CONTROL</p><h1>Inventory<span class="heading-period">.</span></h1><p class="subheading">Manage your own donut types, prices, and available quantities.</p></div><button class="button button-primary" id="addTypeInventory">＋ Add donut type</button></div>
+        <div class="stat-grid three-stats"><article class="stat-card"><span class="stat-label">Active types</span><strong id="inventoryTypeCount">0</strong><span class="stat-note">Types in your menu</span></article><article class="stat-card"><span class="stat-label">Units in stock</span><strong id="inventoryUnitCount">0</strong><span class="stat-note">Across active types</span></article><article class="stat-card"><span class="stat-label">Stock value</span><strong id="inventoryStockValue">₱0.00</strong><span class="stat-note">At listed selling prices</span></article></div>
+        <div class="panel table-panel"><div class="panel-heading"><div><h2>Donut type list</h2><p>Names and categories are entered by you.</p></div><input class="table-search" id="inventorySearch" type="search" placeholder="Search inventory…" aria-label="Search inventory"></div><div class="table-scroll"><table><thead><tr><th>DONUT TYPE</th><th>PRICE</th><th>AVAILABLE</th><th>STATUS</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody id="inventoryRows"></tbody></table></div><div class="table-empty" id="inventoryEmpty">No donut types yet. Add a type to begin tracking stock.</div></div>
+      </section>
+
+      <section class="view" id="view-reservations">
+        <div class="page-heading"><div><p class="eyebrow">CUSTOMER ORDERS</p><h1>Reservations<span class="heading-period">.</span></h1><p class="subheading">Keep track of items set aside for collection.</p></div><button class="button button-primary" id="addReservationButton">＋ New reservation</button></div>
+        <div class="stat-grid three-stats"><article class="stat-card"><span class="stat-label">Pending</span><strong id="pendingReservations">0</strong><span class="stat-note">Awaiting collection</span></article><article class="stat-card"><span class="stat-label">Reserved units</span><strong id="reservedUnits">0</strong><span class="stat-note">Across pending reservations</span></article><article class="stat-card"><span class="stat-label">Collected</span><strong id="collectedReservations">0</strong><span class="stat-note">This prototype session</span></article></div>
+        <div class="panel table-panel"><div class="panel-heading"><div><h2>Reservation list</h2><p>Reservations are separate from completed sales.</p></div></div><div class="table-scroll"><table><thead><tr><th>CUSTOMER / RESERVATION</th><th>ITEMS / PAYMENT</th><th>UNITS</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="reservationRows"></tbody></table></div><div class="table-empty" id="reservationEmpty">No reservations yet.</div></div>
+      </section>
+
+      <section class="view" id="view-overview">
+        <div class="page-heading"><div><p class="eyebrow">AT A GLANCE</p><h1>Overview<span class="heading-period">.</span></h1><p class="subheading">A quick look at this prototype session.</p></div><button class="button button-secondary" data-go-sales>＋ Record a sale</button></div>
+        <div class="stat-grid four-stats"><article class="stat-card accent-stat"><span class="stat-label">Session revenue</span><strong id="overviewRevenue">₱0.00</strong><span class="stat-note">Confirmed sales only</span></article><article class="stat-card"><span class="stat-label">Units sold</span><strong id="overviewSold">0</strong><span class="stat-note">Completed transactions</span></article><article class="stat-card"><span class="stat-label">Available stock</span><strong id="overviewStock">0</strong><span class="stat-note">Across active types</span></article><article class="stat-card"><span class="stat-label">Transactions</span><strong id="overviewTransactions">0</strong><span class="stat-note">Completed checkouts</span></article></div>
+        <div class="panel stonks-panel market-mood-panel"><div class="panel-heading"><div><h2>Market mood</h2><p>Based on recent hourly donut sales</p></div><span id="marketMoodBadge" class="mood-badge mood-kalm">KALM</span></div><a class="stonks-link" id="marketMoodLink" href="assets/kalm.svg" target="_blank" rel="noopener noreferrer" aria-label="Open the current market mood image in a new tab"><img id="marketMoodImage" src="assets/kalm.svg" alt="Kalm market mood" loading="lazy"><span id="marketMoodCaption">Sales are relatively stable ↗</span></a><p id="marketMoodDetail" class="mood-detail">Comparing the latest three hours with the preceding three hours.</p></div>
+        <div class="overview-grid"><div class="panel chart-panel"><div class="panel-heading"><div><h2>Today · hourly donuts sold</h2><p>Number of units sold per hour</p></div><span class="chart-key"><i></i> Donuts sold</span></div><div id="hourlyUnitsChart" class="line-chart"><div class="chart-placeholder">Hourly sales will appear here.</div></div></div><div class="panel chart-panel"><div class="panel-heading"><div><h2>This week</h2><p>Daily revenue · last 7 days</p></div><span class="chart-key"><i></i> Revenue</span></div><div class="bar-chart" id="weeklyChart"><div class="chart-placeholder">Weekly sales will appear here.</div></div></div><div class="panel activity-panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Latest confirmed sales</p></div></div><div id="recentActivity" class="activity-list"><div class="activity-empty">No activity to show yet.</div></div></div></div>
+        <div class="analytics-grid">
+          <div class="panel chart-panel"><div class="panel-heading"><div><h2>Today's best sellers</h2><p>Share of donuts sold today</p></div></div><div id="todayProductPie" class="pie-chart"><div class="chart-placeholder">Product sales will appear here.</div></div></div>
+          <div class="panel chart-panel"><div class="panel-heading"><div><h2>Weekly best sellers</h2><p>Share of donuts sold in the last 7 days</p></div></div><div id="weeklyProductPie" class="pie-chart"><div class="chart-placeholder">Weekly product sales will appear here.</div></div></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="page-heading"><div><p class="eyebrow">SALES PERFORMANCE</p><h1>Reports<span class="heading-period">.</span></h1><p class="subheading" id="reportSessionSubtitle">Review sales for the selected session, including its date and totals.</p></div></div>
+        <div class="stat-grid three-stats"><article class="stat-card"><span class="stat-label">Total revenue</span><strong id="reportRevenue">₱0.00</strong><span class="stat-note">Confirmed transactions</span></article><article class="stat-card"><span class="stat-label">Units sold</span><strong id="reportUnits">0</strong><span class="stat-note">Across all types</span></article><article class="stat-card"><span class="stat-label">Average transaction</span><strong id="reportAverage">₱0.00</strong><span class="stat-note">Revenue per checkout</span></article></div>
+        <div class="panel table-panel"><div class="panel-heading"><div><h2 id="transactionHistoryTitle">Transaction history</h2><p>Each row represents one checkout, which may contain multiple types.</p></div></div><div class="table-scroll"><table><thead><tr><th>CHECKOUT / RECEIPT</th><th>ITEMS</th><th>UNITS</th><th>TOTAL</th><th>DATE / TIME</th></tr></thead><tbody id="transactionRows"></tbody></table></div><div class="table-empty" id="transactionEmpty">Completed transactions will appear here.</div></div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="page-heading"><div><p class="eyebrow">PREFERENCES</p><h1>Settings<span class="heading-period">.</span></h1><p class="subheading">Prototype preferences and data controls.</p></div></div>
+        <div class="panel settings-panel"><div class="settings-row"><div><h2>Appearance</h2><p>Switch between light and dark interface themes.</p></div><button class="button button-secondary" id="themeToggle">Switch to dark mode</button></div><div class="settings-row"><div><h2>Prototype data</h2><p>Catalog items and selling sessions are saved in this browser for this prototype. Clearing browser data will remove them.</p></div><button class="button button-danger-outline" id="resetData">Clear all prototype data</button></div><div class="settings-row"><div><h2>About this build</h2><p>Frontend-only demonstration. No real payments, account login, or database connection.</p></div><span class="version-label">v0.2 · LOCAL DEMO</span></div></div>
+      </section>
+
+      <footer class="app-footer"><span>CRUMB <span class="footer-dot">●</span> FRONTEND PROTOTYPE</span><span>Sample data only. No backend connected.</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="typeModalBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="typeModalTitle"><div class="modal-heading"><div><p class="eyebrow">MENU SETUP</p><h2 id="typeModalTitle">Add a donut type</h2><p>Save a product once, then reuse it in future selling sessions.</p></div><button class="close-button" data-close="typeModalBackdrop" aria-label="Close dialog">×</button></div><form id="typeForm"><input type="hidden" id="typeId"><label for="typeName">Donut type name <span>*</span></label><input id="typeName" name="typeName" required maxlength="60" placeholder="Enter your own name"><div><label for="typePrice">Selling price (₱) <span>*</span></label><input id="typePrice" name="typePrice" type="number" min="0.01" step="0.01" required placeholder="e.g. 30.00"></div><p class="form-hint">This saves the product name and price to your catalog. Starting stock is entered separately when you add the product to a selling session.</p><div class="modal-actions"><button type="button" class="button button-secondary" data-close="typeModalBackdrop">Cancel</button><button type="submit" class="button button-primary">Save type</button></div></form></section></div>
+
+
+  <div class="modal-backdrop" id="sessionModalBackdrop" hidden><section class="modal session-modal" role="dialog" aria-modal="true" aria-labelledby="sessionModalTitle"><div class="modal-heading"><div><p class="eyebrow">SELLING SESSION</p><h2 id="sessionModalTitle">Start a new session</h2><p>Choose saved catalog items and enter the stock available today.</p></div><button class="close-button" data-close="sessionModalBackdrop" aria-label="Close dialog">×</button></div><form id="sessionForm"><label for="sessionName">Session name <span>*</span></label><input id="sessionName" required maxlength="80" placeholder="e.g. Friday afternoon selling"><div class="session-products-heading"><strong>Products for this session</strong><span id="sessionCatalogCount">0 saved products</span></div><div id="sessionProductFields" class="session-product-fields"></div><p class="form-hint">Only selected products will appear on the sales screen. Their starting quantities are separate from the saved catalog.</p><div class="modal-actions"><button type="button" class="button button-secondary" data-close="sessionModalBackdrop">Cancel</button><button type="submit" class="button button-primary">Create session</button></div></form></section></div>
+
+  <div class="modal-backdrop" id="checkoutModalBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle"><div class="modal-heading"><div><p class="eyebrow">ORDER REVIEW</p><h2 id="checkoutModalTitle">Confirm this sale</h2><p>Check the quantities and total before recording.</p></div><button class="close-button" data-close="checkoutModalBackdrop" aria-label="Close dialog">×</button></div><div class="checkout-review-list" id="checkoutReviewList"></div><div class="checkout-review-total"><span>Order total</span><strong id="checkoutReviewTotal">₱0.00</strong></div><div class="notice-box"><span>ⓘ</span><p>Confirming will reduce available stock and add one transaction to this session's history.</p></div><div class="modal-actions"><button class="button button-secondary" data-close="checkoutModalBackdrop">Back to order</button><button class="button button-primary" id="confirmSale">Confirm sale</button></div></section></div>
+
+  <div class="modal-backdrop" id="reservationModalBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="reservationModalTitle"><div class="modal-heading"><div><p class="eyebrow">SET ASIDE STOCK</p><h2 id="reservationModalTitle">New reservation</h2><p>Reserve quantities from your available stock.</p></div><button class="close-button" data-close="reservationModalBackdrop" aria-label="Close dialog">×</button></div><form id="reservationForm"><label for="reservationName">Customer name or reference <span>*</span></label><input id="reservationName" required maxlength="80" placeholder="Customer name or short reference"><label for="reservationContact">Contact (optional)</label><input id="reservationContact" maxlength="100" placeholder="Phone number or other contact"><label for="reservationPaymentMethod">Payment method</label><select id="reservationPaymentMethod"><option value="Pay on pickup">Pay on pickup</option><option value="GCash (demo)">GCash (demo only)</option></select><div id="reservationTypeFields" class="reservation-type-fields"></div><p class="form-hint">This admin-created reservation holds available stock until you mark it collected or cancel it. It does not expire automatically. GCash is a demo label only; no payment is processed.</p><div class="modal-actions"><button type="button" class="button button-secondary" data-close="reservationModalBackdrop">Cancel</button><button type="submit" class="button button-primary">Save reservation</button></div></form></section></div>
+  <div class="modal-backdrop" id="customerAuthBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="customerAuthTitle"><div class="modal-heading"><div><p class="eyebrow">CUSTOMER ACCOUNT · DEMO</p><h2 id="customerAuthTitle">Continue your reservation</h2><p>Sign-in is simulated for this prototype. No account is created.</p></div><button class="close-button" data-close="customerAuthBackdrop" aria-label="Close dialog">×</button></div><form id="customerAuthForm"><label for="customerName">Your name <span>*</span></label><input id="customerName" required maxlength="80" placeholder="Enter your name"><label for="customerContact">Contact number or email <span>*</span></label><input id="customerContact" required maxlength="100" placeholder="For the reservation demo"><div class="notice-box"><span>ⓘ</span><p>This is a mock sign-in step. Do not enter a real password or sensitive information.</p></div><div class="modal-actions"><button type="button" class="button button-secondary" data-close="customerAuthBackdrop">Cancel</button><button type="submit" class="button button-primary">Continue</button></div></form></section></div>
+
+  <div class="modal-backdrop" id="publicReservationBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="publicReservationTitle"><div class="modal-heading"><div><p class="eyebrow">RESERVATION SUMMARY</p><h2 id="publicReservationTitle">Set these aside?</h2><p>Submitting temporarily holds the selected stock.</p></div><button class="close-button" data-close="publicReservationBackdrop" aria-label="Close dialog">×</button></div><div id="publicReservationItems" class="checkout-review-list"></div><div class="checkout-review-total"><span>Total due (demo)</span><strong id="publicReservationTotal">₱0.00</strong></div><div class="payment-demo-card"><div><strong>GCash</strong><span>Online payment · demonstration only</span></div><button type="button" class="button button-secondary" id="gcashDemoButton" disabled>Continue to GCash</button></div><p class="form-hint">The GCash button is intentionally inactive. The reservation will be created with “Pending Payment”; no payment is processed.</p><div class="modal-actions"><button class="button button-secondary" data-close="publicReservationBackdrop">Go back</button><button class="button button-primary" id="submitPublicReservation">Submit reservation</button></div></section></div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
