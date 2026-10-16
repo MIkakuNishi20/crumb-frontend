@@ -4,14 +4,13 @@ const API_BASE_URL = "https://donutsmoh.onrender.com";
 document.addEventListener("DOMContentLoaded", () => {
   setupLogin();
   
-  // If already authenticated in this session, load data
   if (localStorage.getItem("crumb_authenticated") === "true") {
     document.body.classList.add("authenticated");
     initializeDashboard();
   }
 });
 
-// 1. Handle Login Screen
+// 1. Handle Login
 function setupLogin() {
   const loginForm = document.getElementById("loginForm");
   const loginScreen = document.getElementById("loginScreen");
@@ -24,15 +23,14 @@ function setupLogin() {
       const user = document.getElementById("loginUsername").value.trim();
       const pass = document.getElementById("loginPassword").value.trim();
 
-      // Demo credentials check matching the prototype guidelines
       if ((user === "admin" && pass === "boss") || (user === "user" && pass === "123")) {
         localStorage.setItem("crumb_authenticated", "true");
         localStorage.setItem("crumb_user", user);
-        loginScreen.hidden = true;
+        if (loginScreen) loginScreen.hidden = true;
         document.body.classList.add("authenticated");
         initializeDashboard();
       } else {
-        loginError.hidden = false;
+        if (loginError) loginError.hidden = false;
       }
     });
   }
@@ -47,10 +45,11 @@ function setupLogin() {
   }
 }
 
-// 2. Initialize Dashboard & Fetch Data from Backend
+// 2. Initialize Dashboard
 async function initializeDashboard() {
   console.log("Dashboard initialized. Connecting to backend...");
   await fetchDonutsFromBackend();
+  setupNavigation();
 }
 
 // 3. Fetch Donuts from Spring Boot Backend
@@ -63,8 +62,6 @@ async function fetchDonutsFromBackend() {
     
     const donuts = await response.json();
     console.log("Loaded donuts from Render database:", donuts);
-    
-    // Render products into the UI grids
     renderCatalog(donuts);
   } catch (error) {
     console.error("Backend connection error:", error);
@@ -72,7 +69,7 @@ async function fetchDonutsFromBackend() {
   }
 }
 
-// 4. Render Catalog Items to the UI Grid
+// 4. Render Catalog Items to UI
 function renderCatalog(donuts) {
   const salesGrid = document.getElementById("salesTypeGrid");
   const storefrontGrid = document.getElementById("storefrontGrid");
@@ -103,7 +100,16 @@ function renderCatalog(donuts) {
   if (storefrontGrid) storefrontGrid.innerHTML = htmlContent;
 }
 
-// Simple Toast Notification Helper
+// 5. Simple Navigation Switcher for Sidebar Tabs
+function setupNavigation() {
+  const navLinks = document.querySelectorAll(".workspace-nav a, .sidebar nav a");
+  navLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      // Handle tab switching if multiple views exist in HTML
+    });
+  });
+}
+
 function showToast(message) {
   const toast = document.getElementById("toast");
   if (toast) {
